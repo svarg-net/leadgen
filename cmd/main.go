@@ -1,3 +1,8 @@
+// @title Buildings API
+// @version 1.0
+// @description API for managing buildings.
+// @host localhost:8080
+// @BasePath /
 package main
 
 import (

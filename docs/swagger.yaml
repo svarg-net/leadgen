@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   entity.Building:
     properties:
@@ -35,8 +36,12 @@ definitions:
       year:
         type: integer
     type: object
+host: localhost:8080
 info:
   contact: {}
+  description: API for managing buildings.
+  title: Buildings API
+  version: "1.0"
 paths:
   /buildings:
     post:
