@@ -7,6 +7,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Create a new building
+// @Description Creates a new building in the database
+// @Tags buildings
+// @Accept json
+// @Produce json
+// @Param building body entity.Building true "Building details"
+// @Success 201 {object} entity.Building
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /buildings [post]
 func (s *Server) createBuilding(c *gin.Context) {
 	var input struct {
 		Name     string `json:"name" binding:"required"`

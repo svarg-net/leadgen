@@ -1,0 +1,75 @@
+definitions:
+  entity.Building:
+    properties:
+      city:
+        $ref: '#/definitions/entity.City'
+      floor_count:
+        $ref: '#/definitions/entity.Floor'
+      id:
+        type: integer
+      name:
+        type: string
+      year_built:
+        $ref: '#/definitions/entity.Year'
+    required:
+    - name
+    type: object
+  entity.City:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  entity.Floor:
+    properties:
+      count:
+        type: integer
+      id:
+        type: integer
+    type: object
+  entity.Year:
+    properties:
+      id:
+        type: integer
+      year:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /buildings:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new building in the database
+      parameters:
+      - description: Building details
+        in: body
+        name: building
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Building'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Building'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new building
+      tags:
+      - buildings
+swagger: "2.0"
