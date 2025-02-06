@@ -11,3 +11,5 @@
 *.dll
 *.so
 *.dylib
+
+pgdata/
