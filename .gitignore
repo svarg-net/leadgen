@@ -1,0 +1,13 @@
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
