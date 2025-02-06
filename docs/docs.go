@@ -138,8 +138,6 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "API for managing buildings.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-	LeftDelim:        "{{",
-	RightDelim:       "}}",
 }
 
 func init() {
