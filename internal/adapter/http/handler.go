@@ -27,10 +27,14 @@ func (s *Server) createBuilding(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&input); err != nil {
-		s.log.Warn("Invalid request payload",
-			zap.Error(err),
-		)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		s.log.Warn("Invalid request payload", zap.Error(err))
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		return
+	}
+
+	if input.Name == "" || input.CityName == "" || input.Year <= 0 || input.Floor <= 0 {
+		s.log.Warn("Missing or invalid fields in request")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "All fields are required and must be valid"})
 		return
 	}
 
@@ -42,9 +46,7 @@ func (s *Server) createBuilding(c *gin.Context) {
 	}
 
 	if err := s.usecase.Create(building); err != nil {
-		s.log.Error("Failed to create building",
-			zap.Error(err),
-		)
+		s.log.Error("Failed to create building", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

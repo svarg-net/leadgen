@@ -17,11 +17,24 @@ func NewBuildingUsecase(repo db.BuildingRepository, logger *zap.Logger) *Buildin
 }
 
 func (u *BuildingUsecase) Create(building *entity.Building) error {
+	cityName := "N/A"
+	if building.City != nil {
+		cityName = building.City.Name
+	}
+	yearBuilt := 0
+	if building.Year != nil {
+		yearBuilt = building.Year.Year
+	}
+	floorCount := 0
+	if building.Floor != nil {
+		floorCount = building.Floor.Count
+	}
+
 	u.logger.Info("Creating building",
 		zap.String("name", building.Name),
-		zap.String("city", building.City.Name),
-		zap.Int("year_built", building.Year.Year),
-		zap.Int("floor_count", building.Floor.Count),
+		zap.String("city", cityName),
+		zap.Int("year_built", yearBuilt),
+		zap.Int("floor_count", floorCount),
 	)
 	err := u.repo.Create(building)
 	if err != nil {
@@ -31,7 +44,7 @@ func (u *BuildingUsecase) Create(building *entity.Building) error {
 		)
 		return err
 	}
-	return err
+	return nil
 }
 
 func (u *BuildingUsecase) GetAll(city, year, floors string) ([]entity.Building, error) {
