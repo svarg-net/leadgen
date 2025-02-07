@@ -4,7 +4,8 @@
 #password: ${DB_PASSWORD}
 #db: ${DB_NAME}
 
-host: db
+host: db  # для докер контейнера golang
+#host: localhost #для работы с локально гошкой
 port: 5432
 user: postgres
 password: your_password

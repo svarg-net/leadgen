@@ -1,10 +1,23 @@
 services:
+  db:
+    image: postgres:14
+    container_name: buildings_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: buildings_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/pgdata:/var/lib/postgresql/data
+    restart: always
+
+
   app:
     build:
-#      context: docker
       dockerfile: docker/app/Dockerfile
     ports:
-      - "8081:8080" # Экспонируем порт приложения
+      - "8081:8080"
     environment:
       - DB_HOST=db
       - DB_PORT=5432
@@ -15,20 +28,14 @@ services:
       - db
     volumes:
       - ./config:/app/config
+      - ./migrations:/migrations
     restart: always
-
-  db:
-    image: postgres:14
-    container_name: buildings_db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: your_password
-      POSTGRES_DB: buildings_db
-    ports:
-      - "5432:5432" # Экспонируем порт PostgreSQL
+  migrate:
+    image: migrate/migrate
+    command: -source file:///app/migrations -database 'postgres://postgres:your_password@db:5432/buildings_db?sslmode=disable' up
     volumes:
-      - ./docker/pgdata:/var/lib/postgresql/data
-    restart: always
-
-volumes:
-  pgdata:
+      - ./migrations:/app/migrations
+    depends_on:
+      - db
+#volumes:
+#  pgdata:
