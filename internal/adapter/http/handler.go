@@ -13,10 +13,18 @@ import (
 // @Tags buildings
 // @Accept json
 // @Produce json
-// @Param building body entity.Building true "Building details"
+//
+//	@Param building body struct {
+//	    Name     string `json:"name" binding:"required"`
+//	    CityName string `json:"city" binding:"required"`
+//	    Year     int    `json:"year_built" binding:"required"`
+//	    Floor    int    `json:"floor_count" binding:"required"`
+//	} true "Building details"
+//
 // @Success 201 {object} entity.Building
-// @Failure 400 {object} map[string]string
-// @Failure 500 {object} map[string]string
+// @Failure 400 {object} map[string]string "Invalid input or missing fields"
+// @Failure 409 {object} map[string]string "Building already exists"
+// @Failure 500 {object} map[string]string "Internal server error"
 // @Router /buildings [post]
 func (s *Server) createBuilding(c *gin.Context) {
 	var input struct {
@@ -54,6 +62,17 @@ func (s *Server) createBuilding(c *gin.Context) {
 	c.JSON(http.StatusCreated, building)
 }
 
+// @Summary Get all buildings
+// @Description Retrieves a list of buildings based on optional filters
+// @Tags buildings
+// @Accept json
+// @Produce json
+// @Param city query string false "City name"
+// @Param year_built query string false "Year built"
+// @Param floor_count query string false "Number of floors"
+// @Success 200 {array} entity.Building
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Router /buildings [get]
 func (s *Server) getBuildings(c *gin.Context) {
 	city := c.Query("city")
 	year := c.Query("year_built")
