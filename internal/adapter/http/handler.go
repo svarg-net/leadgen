@@ -1,6 +1,7 @@
 package http
 
 import (
+	"go.uber.org/zap"
 	"leadgen/internal/entity"
 	"net/http"
 
@@ -26,6 +27,9 @@ func (s *Server) createBuilding(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&input); err != nil {
+		s.log.Warn("Invalid request payload",
+			zap.Error(err),
+		)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -38,6 +42,9 @@ func (s *Server) createBuilding(c *gin.Context) {
 	}
 
 	if err := s.usecase.Create(building); err != nil {
+		s.log.Error("Failed to create building",
+			zap.Error(err),
+		)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -52,6 +59,9 @@ func (s *Server) getBuildings(c *gin.Context) {
 
 	buildings, err := s.usecase.GetAll(city, year, floors)
 	if err != nil {
+		s.log.Error("Failed to get building",
+			zap.Error(err),
+		)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

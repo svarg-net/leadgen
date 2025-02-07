@@ -1,11 +1,11 @@
-host: ${DB_HOST}
-port: ${DB_PORT}
-user: ${DB_USER}
-password: ${DB_PASSWORD}
-db: ${DB_NAME}
+#host: ${DB_HOST}
+#port: ${DB_PORT}
+#user: ${DB_USER}
+#password: ${DB_PASSWORD}
+#db: ${DB_NAME}
 
-#host: localhost
-#port: 5432
-#user: postgres
-#password: your_password
-#db: buildings_db
+host: db
+port: 5432
+user: postgres
+password: your_password
+db: buildings_db

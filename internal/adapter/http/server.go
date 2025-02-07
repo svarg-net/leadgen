@@ -1,15 +1,17 @@
 package http
 
 import (
-	"leadgen/internal/adapter/db"
-	"leadgen/internal/usecase"
-
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+	"leadgen/internal/adapter/db"
+	"leadgen/internal/logger"
+	"leadgen/internal/usecase"
 )
 
 type Server struct {
 	Router  *gin.Engine
 	usecase *usecase.BuildingUsecase
+	log     *zap.Logger
 }
 
 func NewServer() *Server {
@@ -18,10 +20,16 @@ func NewServer() *Server {
 	if err != nil {
 		panic(err)
 	}
+	log, _ := logger.NewLogger()
 	s := &Server{
 		Router:  router,
-		usecase: usecase.NewBuildingUsecase(db.NewBuildingRepository(connect)),
+		usecase: usecase.NewBuildingUsecase(db.NewBuildingRepository(connect), log),
+		log:     log,
 	}
+	s.Router.Use(RecoveryMiddleware(log))
+	log.Info("Starting server",
+		zap.String("address", ":8080"),
+	)
 	s.setupRoutes()
 	return s
 }
@@ -36,5 +44,5 @@ func (s *Server) Run(addr string) {
 }
 
 func (s *Server) Close() {
-	// Закрытие ресурсов, если необходимо
+	s.Close()
 }

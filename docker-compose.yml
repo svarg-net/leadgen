@@ -13,6 +13,8 @@ services:
       - DB_NAME=buildings_db
     depends_on:
       - db
+    volumes:
+      - ./config:/app/config
     restart: always
 
   db:
