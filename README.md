@@ -28,3 +28,6 @@ curl --silent 'http://localhost:8080/buildings' \
 
 go test ./internal/test/... 
 go test ./internal/test/... -bench=.
+
+применение миграций
+docker-compose run --remove-orphans migrate    
