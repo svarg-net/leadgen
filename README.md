@@ -25,3 +25,6 @@ curl --silent 'http://localhost:8080/buildings' \
 --header 'Content-Type: application/json' \
 --data '{"name":"Building B112", "city":"Perm", "year_built":2021, "floor_count":10}'
 
+
+go test ./internal/test/... 
+go test ./internal/test/... -bench=.
