@@ -26,3 +26,7 @@ CREATE TABLE IF NOT EXISTS buildings
     year_id  BIGINT NOT NULL REFERENCES years (id) ON DELETE CASCADE,
     floor_id BIGINT NOT NULL REFERENCES floors (id) ON DELETE CASCADE
 );
+
+ALTER TABLE buildings
+    ADD CONSTRAINT unique_city_year_floor_name
+        UNIQUE (city_id, year_id, floor_id, name);
